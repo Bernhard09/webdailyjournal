@@ -1,0 +1,26 @@
+body {
+    background-color: white;
+    color: black;
+}
+.navbar-light {
+    background-color: white !important;
+    color: black;
+}
+
+/* Dark Theme Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+.navbar-dark {
+    background-color: #121212 !important;
+    color: white;
+}
+
+.navbar-dark a{
+    color: white;
+}
+
+i.dark-mode{
+    color: white;
+}
