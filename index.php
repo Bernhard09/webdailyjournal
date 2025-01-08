@@ -145,15 +145,18 @@
                 <h1 class="fw-bold display-4 pb-3">gallery</h1>
                 <div id="carouselExample" class="carousel slide">
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://hips.hearstapps.com/hmg-prod/images/2026-ferrari-f80-102-670fcc5ff14d6.jpg?crop=1.00xw:0.846xh;0,0.154xh&resize=2048:*" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://www.aljazeera.com/wp-content/uploads/2024/10/AP24301792578902-1730093664.jpg?resize=770%2C513&quality=80"  class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://s7d2.scene7.com/is/image/TWCNews/Charles_Leclerc_F1_racing_AP" class="d-block w-100" alt="...">
-                        </div>
+                        <?php
+                            $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+                            $hasil = $conn->query($sql);
+
+                            while($row = $hasil->fetch_assoc()){
+                        ?>
+                            <div class="carousel-item active">
+                                <img src="img/<?= $row["gambar"]?>"  class="d-block w-100" alt="...">
+                            </div>
+                        <?php
+                            }
+                        ?>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

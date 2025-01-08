@@ -72,7 +72,13 @@ if ($_SESSION['role'] != 'admin') {
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="admin.php?page=article">Article</a>
-            </li> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="admin.php?page=gallery">Gallery</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="admin.php?page=user">User Management</a>
+            </li>    
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-danger fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <?= $_SESSION['username']?>
@@ -86,27 +92,27 @@ if ($_SESSION['role'] != 'admin') {
     </div>
     </nav>
     <!-- nav end -->
-    <!-- content begin -->
+    
     <!-- content begin -->
     <section id="content" class="p-5">
         <div class="container">
             <?php
             if(isset($_GET['page'])){
-            ?>
-                <h4 class="lead display-6 pb-2 border-bottom border-danger-subtle"><?= ucfirst($_GET['page'])?></h4>
-                <?php
+            
+                echo '<h4 class="lead display-6 pb-2 border-bottom border-danger-subtle"><?= ucfirst($_GET["page"])?></h4>';
+                
                 include($_GET['page'].".php");
             }else{
-            ?>
-                <h4 class="lead display-6 pb-2 border-bottom border-danger-subtle">Dashboard</h4>
-                <?php
+            
+                echo '<h4 class="lead display-6 pb-2 border-bottom border-danger-subtle">Dashboard</h4>';
+                
                 include("dashboard.php");
             }
             ?>
         </div>
     </section>
-<!-- content end -->
     <!-- content end -->
+    
     <!-- footer begin -->
     <footer class="text-center p-3 bg-danger-subtle">
     <div>
@@ -120,7 +126,7 @@ if ($_SESSION['role'] != 'admin') {
         ><i class="bi bi-whatsapp h2 p-2 text-dark"></i
         ></a>
     </div>
-    <div>Aprilyani Nur Safitri &copy; 2023</div>
+    <div>Bryant Bernhard &copy; 2025</div>
     </footer>
     <!-- footer end -->
     <script

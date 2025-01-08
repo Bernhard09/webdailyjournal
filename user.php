@@ -1,10 +1,10 @@
 <div class="container">
     <!-- Button trigger add -->
     <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
-        <i class="bi bi-plus-ig"></i> Tambah Article
+        <i class="bi bi-plus-ig"></i> Tambah User
     </button>
     <div class="row">
-        <div class="table-responsive" id="article_data">
+        <div class="table-responsive" id="user_data">
             
         </div>
         <!-- Awal Modal Tambah-->
@@ -12,22 +12,31 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Article</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah User</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="post" action="" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="formGroupExampleInput" class="form-label">Judul</label>
-                                <input type="text" class="form-control" name="judul" placeholder="Tuliskan Judul Artikel" required>
+                                <label for="formGroupExampleInput" class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username" placeholder="Tuliskan username" required>
                             </div>
                             <div class="mb-3">
-                                <label for="floatingTextarea2">Isi</label>
-                                <textarea class="form-control" placeholder="Tuliskan Isi Artikel" name="isi" required></textarea>
+                                <label for="floatingTextInput">Password</label>
+                                <input type="text" class="form-control" placeholder="Tuliskan password" name="password" required></input>
                             </div>
                             <div class="mb-3">
-                                <label for="formGroupExampleInput2" class="form-label">Gambar</label>
-                                <input type="file" class="form-control" name="gambar">
+                                <label for="formGroupExampleInput2" class="form-label">Foto</label>
+                                <input type="file" class="form-control" name="foto">
+                            </div>
+                            <div class="mb-3">
+                                
+                                <label for="formGroupExampleInput2" class="form-label">Role</label>
+                                <select class="form-select" aria-label="Default select example" name="role">
+                                    <option selected>Pilih Role</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="user">User</option>
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -47,13 +56,13 @@ $(document).ready(function(){
     load_data();
     function load_data(hlm){
         $.ajax({
-            url : "article_data.php",
+            url : "user_data.php",
             method : "POST",
             data : {
 					hlm: hlm
 			},
             success : function(data){
-                    $('#article_data').html(data);
+                    $('#user_data').html(data);
             }
         })
     } 
@@ -70,23 +79,23 @@ include "upload_foto.php";
 
 //jika tombol simpan diklik
 if (isset($_POST['simpan'])) {
-    $judul = $_POST['judul'];
-    $isi = $_POST['isi'];
-    $tanggal = date("Y-m-d H:i:s");
+    $new_username = $_POST['username'];
+    $password = md5($_POST['password']);
+    $role = $_POST['role'];
     $username = $_SESSION['username'];
-    $gambar = '';
-    $nama_gambar = $_FILES['gambar']['name'];
+    $foto = '';
+    $nama_foto = $_FILES['foto']['name'];
     
     //jika ada file yang dikirim  
-    if ($nama_gambar != '') {
+    if ($nama_foto != '') {
 		    //panggil function upload_foto untuk cek spesifikasi file yg dikirimkan user
 		    //function ini memiliki 2 keluaran yaitu status dan message
-        $cek_upload = upload_foto($_FILES["gambar"]);
+        $cek_upload = upload_foto($_FILES["foto"]);
 
 				//cek status true/false
         if ($cek_upload['status']) {
-		        //jika true maka message berisi nama file gambar
-            $gambar = $cek_upload['message'];
+		        //jika true maka message berisi nama file foto
+            $foto = $cek_upload['message'];
         } else {
 		        //jika true maka message berisi pesan error, tampilkan dalam alert
             echo "<script>
@@ -97,48 +106,47 @@ if (isset($_POST['simpan'])) {
         }
     }
 
-		//cek apakah ada id yang dikirimkan dari form
+	//cek apakah ada id yang dikirimkan dari form
     if (isset($_POST['id'])) {
         //jika ada id,    lakukan update data dengan id tersebut
         $id = $_POST['id'];
 
-        if ($nama_gambar == '') {
-            //jika tidak ganti gambar
-            $gambar = $_POST['gambar_lama'];
+        if ($nama_foto == '') {
+            //jika tidak ganti foto
+            $foto = $_POST['foto_lama'];
         } else {
-            //jika ganti gambar, hapus gambar lama
-            unlink("img/" . $_POST['gambar_lama']);
+            //jika ganti foto, hapus foto lama
+            unlink("img/" . $_POST['foto_lama']);
         }
 
-        $stmt = $conn->prepare("UPDATE article 
+        $stmt = $conn->prepare("UPDATE user 
                                 SET 
-                                judul =?,
-                                isi =?,
-                                gambar = ?,
-                                tanggal = ?,
-                                username = ?
+                                username =?,
+                                password =?,
+                                foto = ?,
+                                role = ?,
                                 WHERE id = ?");
 
-        $stmt->bind_param("sssssi", $judul, $isi, $gambar, $tanggal, $username, $id);
+        $stmt->bind_param("ssssi", $new_username, $password, $foto, $role, $id);
         $simpan = $stmt->execute();
     } else {
 		    //jika tidak ada id, lakukan insert data baru
-        $stmt = $conn->prepare("INSERT INTO article (judul,isi,gambar,tanggal,username)
-                                VALUES (?,?,?,?,?)");
+        $stmt = $conn->prepare("INSERT INTO user (username,password,foto,role)
+                                VALUES (?,?,?,?)");
 
-        $stmt->bind_param("sssss", $judul, $isi, $gambar, $tanggal, $username);
+        $stmt->bind_param("ssss", $new_username, $password, $foto, $role);
         $simpan = $stmt->execute();
     }
 
     if ($simpan) {
         echo "<script>
             alert('Simpan data sukses');
-            document.location='admin.php?page=article';
+            document.location='admin.php?page=user';
         </script>";
     } else {
         echo "<script>
             alert('Simpan data gagal');
-            document.location='admin.php?page=article';
+            document.location='admin.php?page=user';
         </script>";
     }
 
@@ -149,14 +157,14 @@ if (isset($_POST['simpan'])) {
 //jika tombol hapus diklik
 if (isset($_POST['hapus'])) {
     $id = $_POST['id'];
-    $gambar = $_POST['gambar'];
+    $foto = $_POST['foto'];
 
-    if ($gambar != '') {
-        //hapus file gambar
-        unlink("img/" . $gambar);
+    if ($foto != '') {
+        //hapus file foto
+        unlink("img/" . $foto);
     }
 
-    $stmt = $conn->prepare("DELETE FROM article WHERE id =?");
+    $stmt = $conn->prepare("DELETE FROM user WHERE id =?");
 
     $stmt->bind_param("i", $id);
     $hapus = $stmt->execute();
@@ -164,12 +172,12 @@ if (isset($_POST['hapus'])) {
     if ($hapus) {
         echo "<script>
             alert('Hapus data sukses');
-            document.location='admin.php?page=article';
+            document.location='admin.php?page=user';
         </script>";
     } else {
         echo "<script>
             alert('Hapus data gagal');
-            document.location='admin.php?page=article';
+            document.location='admin.php?page=user';
         </script>";
     }
 

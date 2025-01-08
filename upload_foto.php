@@ -14,7 +14,7 @@ function upload_foto($File){
 	$FileExt = strtolower(end($FileExt));
 
 	//Allowed files:
-	$Allowed = array('jpg', 'png', 'gif', 'jpeg');  
+	$Allowed = array('jpg', 'png', 'gif', 'jpeg', 'avif', 'webp');  
 
 	// Check file size
 	if ($FileSize > 500000) {
