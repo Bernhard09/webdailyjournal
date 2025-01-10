@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $password = md5($_POST['pass']);
 
 	//prepared statement
-  $stmt = $conn->prepare("SELECT username, role 
+  $stmt = $conn->prepare("SELECT id, username, role 
                           FROM user 
                           WHERE username=? AND password=?");
 
@@ -36,8 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   //check apakah ada baris hasil data user yang cocok
   if (!empty($row)) {
     //jika ada, simpan variable username pada session
+    $_SESSION['id'] = $row['id'];
     $_SESSION['username'] = $row['username'];
     $_SESSION['role'] = $row['role'];
+
 
     if($row["role"] == "admin") {
       //mengalihkan ke halaman admin

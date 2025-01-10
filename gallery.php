@@ -1,4 +1,6 @@
-<div class="container">
+<h4 class="lead display-6 pb-2 border-bottom border-danger-subtle"><?= ucfirst($_GET["page"])?></h4>
+
+<div class="container mt-4">
     <!-- Button trigger add -->
     <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
         <i class="bi bi-plus-ig"></i> Tambah Gambar

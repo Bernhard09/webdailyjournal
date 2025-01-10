@@ -83,9 +83,6 @@
                             <a class="nav-link" href="#about-me">About Me</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php">Login</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="logout.php">Logout</a>
                         </li>
                         <li>
@@ -146,7 +143,7 @@
                 <div id="carouselExample" class="carousel slide">
                     <div class="carousel-inner">
                         <?php
-                            $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+                            $sql = "SELECT * FROM gallery";
                             $hasil = $conn->query($sql);
 
                             while($row = $hasil->fetch_assoc()){

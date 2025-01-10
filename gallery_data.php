@@ -2,7 +2,8 @@
                 <thead class="table-dark">
                     <tr>
                         <th>No</th>
-                        <th class="w-25">Gambar</th>
+                        <th class="w-25">Tanggal</th>
+                        <th class="w-75">Gambar</th>
                         <th class="w-25">Aksi</th>
                     </tr>
                 </thead>
@@ -11,7 +12,7 @@
                     include "koneksi.php";
 
                     $hlm = (isset($_POST['hlm'])) ? $_POST['hlm'] : 1;
-                    $limit = 4;
+                    $limit = 3;
                     $limit_start = ($hlm - 1) * $limit;
                     $no = $limit_start + 1;
 
@@ -23,11 +24,17 @@
                         <tr>
                             <td><?= $no++ ?></td>
                             <td>
+                                pada : <?= $row["tanggal"] ?>
+                                <br>oleh : <?= $row["username"] ?>
+                            </td>
+                            <td>
                                 <?php
                                 if ($row["gambar"] != '') {
                                     if (file_exists('img/' . $row["gambar"] . '')) {
                                 ?>
-                                        <img src="img/<?= $row["gambar"] ?>" width="100">
+                                        <a href="#" title="detail" data-bs-toggle="modal" data-bs-target="#modalDetail<?= $row["id"] ?>">
+                                            <img src="img/<?= $row["gambar"] ?>" width="100">
+                                        </a>
                                 <?php
                                     }
                                 }
@@ -37,6 +44,36 @@
                                 <a href="#" title="edit" class="badge rounded-pill text-bg-success" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $row["id"] ?>"><i class="bi bi-pencil"></i></a>
                                 <a href="#" title="delete" class="badge rounded-pill text-bg-danger" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $row["id"] ?>"><i class="bi bi-x-circle"></i></a>
                                 
+                                <!-- Awal Modal Detail -->
+                                <div class="modal fade" id="modalDetail<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Gambar</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form method="post" action="" enctype="multipart/form-data">
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        
+                                                        <?php
+                                                        if ($row["gambar"] != '') {
+                                                            if (file_exists('img/' . $row["gambar"] . '')) {
+                                                        ?>
+                                                                <br><img src="img/<?= $row["gambar"] ?>" width="100%">
+                                                        <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <!-- Akhir Modal Detail -->
+
                                 <!-- Awal Modal Edit -->
                                 <div class="modal fade" id="modalEdit<?= $row["id"] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">

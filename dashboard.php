@@ -16,6 +16,7 @@ $hasil2 = $conn->query($sql2);
 //menghitung jumlah baris data gallery
 $jumlah_gallery = $hasil2->num_rows;
 ?>
+<h4 class="lead display-6 pb-2 border-bottom border-danger-subtle">Dashboard</h4>
 <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center pt-4">
     <div class="col">
         <div class="card border border-danger mb-3 shadow" style="max-width: 18rem;">
