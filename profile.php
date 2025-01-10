@@ -1,6 +1,7 @@
 <h4 class="lead display-6 pb-2 border-bottom border-danger-subtle"><?= ucfirst($_GET["page"])?></h4>
 
 <div class="container mt-4">
+    
     <form method="post" action="" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="formGroupExampleInput" class="form-label">Username</label>
@@ -8,8 +9,18 @@
             <input type="text" class="form-control" name="username" placeholder="<?= $_SESSION['username']?>">
         </div>
         <div class="mb-3">
-            <label for="floatingTextInput">Password</label>
-            <input type="text" class="form-control" placeholder="Tuliskan password" name="password"></input>
+            <?php
+            $pass = null; 
+            if (isset($_SESSION['id'])) {
+                $id = $_SESSION['id'];
+                $sql = "SELECT password FROM user WHERE id = $id";
+                $hasil = $conn->query($sql);
+                
+                $pass = $hasil->fetch_assoc();
+            }
+            ?>
+            <label for="floatingTextInput" >Password</label>
+            <input type="text" class="form-control" placeholder="Tuliskan password" name="password" value="<?= $pass["password"] ?>">
         </div>
         <div class="mb-3">
             <label for="formGroupExampleInput2" class="form-label">Foto</label>
@@ -47,8 +58,8 @@ include "upload_foto.php";
 
 //jika tombol simpan diklik
 if (isset($_POST['simpan'])) {
-    $new_username = $_POST['username'];
-    $password = md5($_POST['password']);
+    $new_username = $_POST['username'] ? $_POST['username'] : $_SESSION['username'];
+    $password = $_POST['password'] ? md5($_POST['password']) : $pass['password'];
     $username = $_SESSION['username'];
     $foto = '';
     $nama_foto = $_FILES['foto']['name'];
