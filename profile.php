@@ -3,11 +3,7 @@
 <div class="container mt-4">
     
     <form method="post" action="" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="formGroupExampleInput" class="form-label">Username</label>
-            <input type="hidden" name="id" value="<?= $_SESSION["id"] ?>">
-            <input type="text" class="form-control" name="username" placeholder="<?= $_SESSION['username']?>">
-        </div>
+        <input type="hidden" name="id" value="<?= $_SESSION["id"] ?>">
         <div class="mb-3">
             <?php
             $pass = null; 
@@ -20,7 +16,7 @@
             }
             ?>
             <label for="floatingTextInput" >Password</label>
-            <input type="text" class="form-control" placeholder="Tuliskan password" name="password" value="<?= $pass["password"] ?>">
+            <input type="text" class="form-control" placeholder="Tuliskan password" name="password">
         </div>
         <div class="mb-3">
             <label for="formGroupExampleInput2" class="form-label">Foto</label>
